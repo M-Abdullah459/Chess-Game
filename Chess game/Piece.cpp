@@ -3,6 +3,7 @@
 Piece::Piece(bool isWhite = NULL, int row = NULL, int column = NULL, char name = ' ') : isWhite(isWhite), isAlive(true), name(name) {
 	this->position.row = row;
 	this->position.column = column;
+	this->isFirstMove = true;
 }
 bool Piece::is_White() {
 	if (this->isWhite == true)
@@ -24,5 +25,5 @@ void Piece::captured() {
 	return;
 }
 char Piece::getName() { return name; }
-
-
+void Piece::firstMoveFalse() { isFirstMove = false; }
+void Piece::firstMoveTrue() { isFirstMove = true; }

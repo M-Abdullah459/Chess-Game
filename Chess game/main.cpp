@@ -13,15 +13,33 @@ int main() {
 		if (isWhiteTurn == true && b.check_isWhite(startRow, startColumn) == true) {
 			cout << "Enter End Row - Column : ";
 			cin >> endRow >> endColumn;
-			if (b.isCheck(isWhiteTurn) == true) {
-				cout << " Check!" << endl;
+
+			if (b.movePiece(startRow, startColumn, endRow, endColumn) == false) {
+				cout << " Invalid Move!\n";
 				system("pause");
 				system("CLS");
 				continue;
 			}
-			if (b.movePiece(startRow, startColumn, endRow, endColumn) == false) {
-				cout << " Invalid Move!\n";
+			if (b.isCheck(true) == true) {
+				b.undo(startRow, startColumn, endRow, endColumn);
+				cout << " Check \n";
 				system("pause");
+				system("CLS");
+				continue;
+			}
+			if (b.isCheck(false) == true)
+			{
+				cout << "Check!" << endl;
+				if (b.isCheckMate(false) == true) {
+					system("CLS");
+					b.print();
+					cout << " Check Mate! \n";
+					cout << " white Wins! \n";
+					system("pause");
+					break;
+				}
+				system("pause");
+				b.undo(startRow, startColumn, endRow, endColumn);
 				system("CLS");
 				continue;
 			}
@@ -44,6 +62,30 @@ int main() {
 				system("CLS");
 				continue;
 			}
+			if (b.isCheck(false) == true) {
+				b.undo(startRow, startColumn, endRow, endColumn);
+				cout << " Check \n";
+				system("pause");
+				system("CLS");
+				continue;
+			}
+			if (b.isCheck(true) == true)
+			{
+				cout << "Check!" << endl;
+				if (b.isCheckMate(true) == true) {
+					system("CLS");
+					b.print();
+					cout << " Check Mate! \n";
+					cout << " Black  Wins! \n";
+					system("pause");
+					break;
+				}
+				system("pause");
+				b.undo(startRow, startColumn, endRow, endColumn);
+				system("CLS");
+				continue;
+
+			}
 			system("CLS");
 			isWhiteTurn = true;
 			continue;
@@ -59,4 +101,3 @@ int main() {
 
 	}
 }
-

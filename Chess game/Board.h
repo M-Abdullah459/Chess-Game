@@ -1,4 +1,5 @@
 #pragma once
+#include<windows.h>
 #include<iostream>
 #include"Piece.h"
 #include"Rock.h"
@@ -11,7 +12,7 @@ class Board
 {
 	int row;
 	int column;
-
+	Piece* temp;
 	Piece* board[8][8];
 public:
 
@@ -55,7 +56,7 @@ public:
 				board[i][j] = nullptr;
 			}
 		}
-
+		temp = nullptr;
 	}
 	bool movePiece(int startRow, int startColumn, int endRow, int endColumn) {
 		if (board[startRow][startColumn] == nullptr)
@@ -67,12 +68,22 @@ public:
 			return false;
 		if (isPathClear(startRow, startColumn, endRow, endColumn) == false)
 			return false;
+		if (temp != nullptr) {
+			delete temp;
+			temp = nullptr;
+		}
+
 		if (board[endRow][endColumn] != nullptr && ((board[startRow][startColumn]->is_White()) != (board[endRow][endColumn]->is_White()))) {
-			delete board[endRow][endColumn];
+			temp = board[endRow][endColumn];
+			temp->update_Position(endRow, endColumn);
+
 		}
 
 		board[endRow][endColumn] = board[startRow][startColumn];
 		board[endRow][endColumn]->update_Position(endRow, endColumn);
+		if (board[endRow][endColumn]->getName() == 'P' || board[endRow][endColumn]->getName() == 'p') {
+			board[endRow][endColumn]->firstMoveFalse();
+		}
 
 		board[startRow][startColumn] = nullptr;
 
@@ -262,29 +273,46 @@ public:
 		return true;
 
 	}
+	// print
 	void print()const {
 		cout << endl;
+		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hConsole, 12);
 		cout << "      ";
 		for (int k = 0; k < 8; k++) {
 			cout << k << "    ";
 		}
-		cout << endl << endl;
+		cout << "\n------------------------------------------";
+		cout << endl;
 		for (int i = 0; i < 8; i++) {
+			SetConsoleTextAttribute(hConsole, 12);
 			cout << " " << i << "    ";
 			for (int j = 0; j < 8; j++) {
 
 
 
 				if (board[i][j] != nullptr) {
+					SetConsoleTextAttribute(hConsole, 7);
 					cout << board[i][j]->getName() << "    ";
 				}
 				else
-					cout << "_" << "    ";
+				{
+					SetConsoleTextAttribute(hConsole, 11);
+					cout << "." << "    ";
+				}
 			}
 			cout << endl << endl;
+			SetConsoleTextAttribute(hConsole, 12);
 		}
-
+		cout << "------------------------------------------\n";
+		cout << "      ";
+		for (int k = 0; k < 8; k++) {
+			cout << k << "    ";
+		}
+		cout << endl;
+		SetConsoleTextAttribute(hConsole, 7);
 	}
+
 	bool check_isWhite(int startRow, int startColumn) {
 		if (board[startRow][startColumn] == nullptr)
 			return false;
@@ -354,6 +382,39 @@ public:
 			return false;
 		}
 	}
+	void undo(int startRow, int startColumn, int endRow, int endColumn) {
+		board[startRow][startColumn] = board[endRow][endColumn];
+		board[startRow][startColumn]->update_Position(startRow, startColumn);
+		board[endRow][endColumn] = temp;
+		temp = nullptr;
+		if (board[startRow][startColumn]->getName() == 'P' || board[startRow][startColumn]->getName() == 'p') {
+			if (startRow == 1 || startRow == 6) {
+				board[startRow][startColumn]->firstMoveTrue();
+			}
+		}
+
+	}
+	bool isCheckMate(bool isWhiteTurn) {
+		for (int startRow = 0; startRow < 8; startRow++) {
+			for (int startColumn = 0; startColumn < 8; startColumn++) {
+				if (board[startRow][startColumn] != nullptr && (board[startRow][startColumn]->is_White() == isWhiteTurn)) {
+					for (int endRow = 0; endRow < 8; endRow++) {
+						for (int endColumn = 0; endColumn < 8; endColumn++) {
+							if (movePiece(startRow, startColumn, endRow, endColumn) == true) {
+								if (isCheck(isWhiteTurn) == false) {
+									undo(startRow, startColumn, endRow, endColumn);
+									return false;
+								}
+								undo(startRow, startColumn, endRow, endColumn);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
 
 };
-

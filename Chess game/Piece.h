@@ -8,6 +8,7 @@ struct Position {
 class Piece
 {
 protected:
+	bool isFirstMove;
 	char name;
 	bool isWhite;
 	bool isAlive;
@@ -20,6 +21,7 @@ public:
 	void captured();
 	virtual bool isValidMove(int endRow, int endColumn) = 0;
 	char getName();
+	void firstMoveFalse();
+	void firstMoveTrue();
 	Piece(bool isWhite, int row, int column, char name);
 };
-
