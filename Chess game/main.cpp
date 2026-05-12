@@ -38,6 +38,7 @@ int main() {
 					system("pause");
 					break;
 				}
+		
 				system("pause");
 				b.undo(startRow, startColumn, endRow, endColumn);
 				system("CLS");
