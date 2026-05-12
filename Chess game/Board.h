@@ -328,6 +328,7 @@ public:
 			}
 		}
 	}
+	//check condition 
 	bool isCheck(bool isWhiteTurn) {
 		row = -1;
 		column = -1;
