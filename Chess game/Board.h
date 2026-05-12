@@ -2,7 +2,7 @@
 #include<windows.h>
 #include<iostream>
 #include"Piece.h"
-#include"Rock.h"
+#include"Rook.h"
 #include"Knight.h"
 #include"King.h"
 #include"Queen.h"
