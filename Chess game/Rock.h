@@ -2,7 +2,7 @@
 #include"Piece.h"
 class Rook :public Piece
 {
-
+//Rock header file
 public:
 	Rook(char name, int isWhite, int row, int column) :Piece(isWhite, row, column, name) {}
 	bool isValidMove(int endRow, int endColumn) override {
