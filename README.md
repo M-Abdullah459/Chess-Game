@@ -29,3 +29,6 @@ A fully functional, object-oriented Chess game designed for the Windows console.
    - *Example:* To move a piece from (1, 0) to (3, 0), enter the start coordinates and then the end coordinates when prompted.
 3. **Turns:** The game alternates between White and Black. Illegal moves or moves resulting in a "Self-Check" will be rejected.
 
+>>Conclusion:
+> This Chess Game project highlights the practical implementation of advanced C++ programming concepts and logical thinking. It reflects the ability to build complex systems, manage game mechanics, and develop structured software solutions through efficient coding practices.
+
