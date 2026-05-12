@@ -64,8 +64,11 @@ public:
 		if (board[endRow][endColumn] != nullptr && board[endRow][endColumn]->is_White() == board[startRow][startColumn]->is_White())
 			return false;
 
+		//check for valid move
 		if (board[startRow][startColumn]->isValidMove(endRow, endColumn) == false)
 			return false;
+
+		//check for path clarity
 		if (isPathClear(startRow, startColumn, endRow, endColumn) == false)
 			return false;
 		if (temp != nullptr) {
@@ -325,6 +328,7 @@ public:
 			}
 		}
 	}
+	//check condition 
 	bool isCheck(bool isWhiteTurn) {
 		row = -1;
 		column = -1;
